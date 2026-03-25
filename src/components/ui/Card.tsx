@@ -1,7 +1,11 @@
 import { HTMLAttributes, forwardRef } from 'react';
 import { cn } from './Button';
 
-export const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+export interface CardProps extends HTMLAttributes<HTMLDivElement> {
+  asChild?: boolean;
+}
+
+export const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ className, ...props }, ref) => (
     <div
       ref={ref}

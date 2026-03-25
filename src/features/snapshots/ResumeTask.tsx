@@ -6,7 +6,6 @@ import { ArrowLeft, Play, AlertTriangle, ShieldCheck, Clock, Brain } from 'lucid
 import { db } from '../../db/db';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
-import type { Snapshot } from '../../types';
 
 export default function ResumeTask() {
   const { id } = useParams();
@@ -57,7 +56,7 @@ export default function ResumeTask() {
         <p className="text-zinc-500 dark:text-zinc-400 mb-8 max-w-[280px] leading-relaxed text-balance">
           O contexto desta tarefa já foi fechado e não deve ser modificado. Para voltares a trabalhar nela, reativa-a a partir do painel principal.
         </p>
-        <Button variant="outline" size="lg" className="w-full max-w-[260px] shadow-sm" asChild>
+        <Button variant="secondary" size="lg" className="w-full max-w-[260px] shadow-sm" asChild>
           <Link to="/">Voltar ao Início</Link>
         </Button>
       </div>

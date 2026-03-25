@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, Save, Brain, Clock, ShieldAlert } from 'lucide-react';
+import { ArrowLeft, Brain, Clock, ShieldAlert } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../db/db';
