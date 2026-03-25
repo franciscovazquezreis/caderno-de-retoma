@@ -1,0 +1,14 @@
+{
+  "snapshot": {
+    "whereIStopped": "Where did you stop?",
+    "nextExactStep": "What is the exact next step?",
+    "startNow": "Start now"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "settings": "Settings",
+    "exportBackup": "Export JSON Backup",
+    "importBackup": "Import JSON Backup"
+  }
+}
