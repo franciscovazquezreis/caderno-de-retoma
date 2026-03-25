@@ -42,7 +42,7 @@ export default function Settings() {
         const json = JSON.parse(event.target?.result as string);
         if (json.tasks && json.snapshots) {
           if (confirm('Atenção: A importação vai SOBRESCREVER localmente todos os dados atuais. Queres mesmo continuar?')) {
-            await db.transaction('rw', db.tasks, db.snapshots, db.settings, db.tags, db.taskTags, async () => {
+            await db.transaction('rw', [db.tasks, db.snapshots, db.settings, db.tags, db.taskTags], async () => {
               await db.tasks.clear();
               await db.snapshots.clear();
               await db.tags.clear();
@@ -75,7 +75,7 @@ export default function Settings() {
 
   const handleClear = async () => {
     if (confirm('ATENÇÃO: Vais apagar todos os teus dados locais. Esta ação é completamente IRREVERSÍVEL sem um backup. Confirmas?')) {
-      await db.transaction('rw', db.tasks, db.snapshots, db.tags, db.taskTags, db.settings, async () => {
+      await db.transaction('rw', [db.tasks, db.snapshots, db.tags, db.taskTags, db.settings], async () => {
         await db.tasks.clear();
         await db.snapshots.clear();
         await db.tags.clear();
