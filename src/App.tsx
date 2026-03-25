@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 
 export default function App() {
   return (
@@ -6,6 +7,7 @@ export default function App() {
       <main className="max-w-md mx-auto min-h-screen bg-white dark:bg-zinc-900 shadow-xl border-x border-zinc-200 dark:border-zinc-800 relative">
         <Outlet />
       </main>
+      <Analytics />
     </div>
   );
 }
