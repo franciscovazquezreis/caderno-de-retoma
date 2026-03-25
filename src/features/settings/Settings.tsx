@@ -15,8 +15,9 @@ export default function Settings() {
       const snapshots = await db.snapshots.toArray();
       const settings = await db.settings.toArray();
       const tags = await db.tags.toArray();
+      const taskTags = await db.taskTags.toArray();
       
-      const data = { tasks, snapshots, settings, tags, version: 1 };
+      const data = { tasks, snapshots, settings, tags, taskTags, version: 1 };
       const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -41,14 +42,22 @@ export default function Settings() {
         const json = JSON.parse(event.target?.result as string);
         if (json.tasks && json.snapshots) {
           if (confirm('Atenção: A importação vai SOBRESCREVER localmente todos os dados atuais. Queres mesmo continuar?')) {
-            await db.transaction('rw', db.tasks, db.snapshots, db.settings, db.tags, async () => {
+            await db.transaction('rw', db.tasks, db.snapshots, db.settings, db.tags, db.taskTags, async () => {
               await db.tasks.clear();
               await db.snapshots.clear();
+              await db.tags.clear();
+              await db.taskTags.clear();
               await db.tasks.bulkAdd(json.tasks);
               await db.snapshots.bulkAdd(json.snapshots);
               if (json.settings?.length) {
                 await db.settings.clear();
                 await db.settings.bulkAdd(json.settings);
+              }
+              if (json.tags?.length) {
+                await db.tags.bulkAdd(json.tags);
+              }
+              if (json.taskTags?.length) {
+                await db.taskTags.bulkAdd(json.taskTags);
               }
             });
             alert('A importação do Contexto foi concluída com sucesso!');
@@ -66,8 +75,13 @@ export default function Settings() {
 
   const handleClear = async () => {
     if (confirm('ATENÇÃO: Vais apagar todos os teus dados locais. Esta ação é completamente IRREVERSÍVEL sem um backup. Confirmas?')) {
-      await db.tasks.clear();
-      await db.snapshots.clear();
+      await db.transaction('rw', db.tasks, db.snapshots, db.tags, db.taskTags, db.settings, async () => {
+        await db.tasks.clear();
+        await db.snapshots.clear();
+        await db.tags.clear();
+        await db.taskTags.clear();
+        await db.settings.clear();
+      });
       alert('Todos os dados foram eliminados permanentemente.');
     }
   };

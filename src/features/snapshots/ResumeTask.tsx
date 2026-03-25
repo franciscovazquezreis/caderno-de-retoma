@@ -104,8 +104,8 @@ export default function ResumeTask() {
             {task.title}
           </h2>
           <div className="flex items-center gap-4 mt-4 text-xs font-medium text-zinc-500 dark:text-zinc-400">
-            <div className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5"/> Arranque: {recentSnapshot.resumeEffortEstimate}</div>
-            <div className="flex items-center gap-1.5"><Brain className="w-3.5 h-3.5"/> Carga Mental: {recentSnapshot.mentalState}</div>
+            <div className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5"/> Arranque: {recentSnapshot.resumeEffortEstimate || 'Não estimado'}</div>
+            <div className="flex items-center gap-1.5"><Brain className="w-3.5 h-3.5"/> Carga Mental: {recentSnapshot.mentalState || 'Não avaliada'}</div>
           </div>
         </div>
 

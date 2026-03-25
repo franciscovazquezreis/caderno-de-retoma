@@ -14,13 +14,13 @@ export default function Search() {
     const q = query.toLowerCase().trim();
     if (!q) return [];
     
-    // Naive local search over offline Dexie instance
-    const tasks = await db.tasks.toArray();
-    return tasks.filter(t => 
-      t.title.toLowerCase().includes(q) || 
-      t.project?.toLowerCase().includes(q) ||
-      t.description?.toLowerCase().includes(q)
-    );
+    // Optimized local search exposing Dexie filtering directly instead of buffering array
+    return await db.tasks.filter((t) => {
+      const titleMatch = t.title.toLowerCase().includes(q);
+      const projectMatch = t.project ? t.project.toLowerCase().includes(q) : false;
+      const descMatch = t.description ? t.description.toLowerCase().includes(q) : false;
+      return titleMatch || projectMatch || descMatch;
+    }).toArray();
   }, [query]);
 
   return (

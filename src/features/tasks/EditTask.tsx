@@ -47,11 +47,11 @@ export default function EditTask() {
     }
   };
 
-  if (task === undefined) return null;
-  if (task === null) {
-      navigate('/');
-      return null;
-  }
+  useEffect(() => {
+    if (task === null) navigate('/');
+  }, [task, navigate]);
+
+  if (!task) return null;
 
   return (
     <div className="flex flex-col h-full animate-in slide-in-from-bottom-4 duration-500 fade-in bg-white dark:bg-zinc-900">
