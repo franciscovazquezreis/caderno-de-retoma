@@ -1,0 +1,5 @@
+{
+  "name": "Caderno de Retoma de Contexto",
+  "description": "Uma PWA local-first para capturar e recuperar contexto de trabalho interrompido.",
+  "requestFramePermissions": []
+}

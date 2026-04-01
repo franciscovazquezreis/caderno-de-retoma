@@ -1,26 +1,37 @@
-import Dexie, { type EntityTable } from 'dexie';
-import type { Task, Tag, TaskTag, Snapshot, Settings } from '../types';
+import Dexie, { Table } from 'dexie';
+import { Task, Tag, TaskTag, Snapshot, AppSettings } from '../types';
 
-export class CadernoDatabase extends Dexie {
-  tasks!: EntityTable<Task, 'id'>;
-  tags!: EntityTable<Tag, 'id'>;
-  taskTags!: EntityTable<TaskTag, 'id'>;
-  snapshots!: EntityTable<Snapshot, 'id'>;
-  settings!: EntityTable<Settings, 'id'>;
+export class ContextDB extends Dexie {
+  tasks!: Table<Task, string>;
+  tags!: Table<Tag, string>;
+  taskTags!: Table<TaskTag, string>;
+  snapshots!: Table<Snapshot, string>;
+  settings!: Table<AppSettings, string>;
 
   constructor() {
-    super('CadernoRetomaDB');
-    
-    // Schema definition for Indexed properties
-    // Bumping to version 2 to apply the new index for 'updatedAt'
-    this.version(2).stores({
-      tasks: 'id, title, project, status, priority, createdAt, updatedAt',
+    super('ContextDB');
+    this.version(1).stores({
+      tasks: 'id, title, status, priority, createdAt, updatedAt',
       tags: 'id, name',
       taskTags: 'id, taskId, tagId',
       snapshots: 'id, taskId, type, createdAt',
-      settings: 'id'
+      settings: 'id',
     });
   }
 }
 
-export const db = new CadernoDatabase();
+export const db = new ContextDB();
+
+// Initialize default settings if they don't exist
+db.on('populate', () => {
+  const browserLang = navigator.language;
+  const defaultLang = browserLang.startsWith('pt') ? 'pt-PT' : 'en-US';
+
+  db.settings.add({
+    id: 'default',
+    requirePin: false,
+    autoLockMinutes: 5,
+    theme: 'system',
+    language: defaultLang,
+  });
+});
